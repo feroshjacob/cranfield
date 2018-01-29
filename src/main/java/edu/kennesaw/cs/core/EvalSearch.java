@@ -44,7 +44,8 @@ public class EvalSearch {
 
 
         List<Double> ndcgs = new ArrayList<Double>();
-        for (Query query : ReadCranfieldData.readQueries()) {
+        List<Query> queries = ReadCranfieldData.readQueries();
+        for (Query query : queries) {
             double queryScore = 0.0;
             List<Integer> docs = coreSearch.search(query.getQuery());
             for (int i = 0; i < docs.size(); i++) {
@@ -67,7 +68,7 @@ public class EvalSearch {
         for (Double ndcg : ndcgs) {
             sum = sum + ndcg;
         }
-        System.out.println("Total ndcg score=" + sum / ndcgs.size());
+        System.out.println("Total ndcg score=" + sum/(queries.size()-1) );
     }
 
     private static void calculateIdeal() {

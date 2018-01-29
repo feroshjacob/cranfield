@@ -14,7 +14,7 @@ Yes!. Try to run the class `edu.kennesaw.cs.core.EvalSearch`. The expected outpu
 ```text
 172)solution of the blasius problem with three-point boundary conditions . dcg=7.523719014285829, ideal=10.158777744901698,ndcg= 0.7406126212438987
 192)papers dealing with uniformly loaded sectors . dcg=4.0, ideal=11.793836475517567,ndcg= 0.3391602052736162
-Total ndcg score=0.5398864132587574
+Total ndcg score=0.004798990340077844
 ```
 
 ### What is nDCG score?
