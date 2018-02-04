@@ -1,5 +1,6 @@
 import json
 
+
 def read_documents():
     return json.load(open('../resources/cranfield_data.json'))
 
