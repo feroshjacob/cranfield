@@ -37,7 +37,10 @@ def calculate_dcg(query, documents):
     count = 1
     sum = 0.0
     for document in documents:
-        relevance = query_document_relevance[str(query['query number']) + "_" + str(document)]
+        relevance =0
+        key = str(query['query number']) + "_" + str(document)
+        if key in query_document_relevance:
+            relevance = query_document_relevance[key]
         sum = sum + relevance / math.log10(count + 1)
         count = count + 1
     return sum
