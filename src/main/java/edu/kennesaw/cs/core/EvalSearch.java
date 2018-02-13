@@ -47,7 +47,11 @@ public class EvalSearch {
         List<Query> queries = ReadCranfieldData.readQueries();
         for (Query query : queries) {
             double queryScore = 0.0;
-            List<Integer> docs = coreSearch.search(query.getQuery());
+            List<Integer> docsWithDuplicates = coreSearch.search(query.getQuery());
+            List<Integer> docs = new ArrayList<Integer>(new HashSet<Integer>(docsWithDuplicates));
+            if(docs.size()!=docsWithDuplicates.size()) {
+               throw new RuntimeException( "Search results should not have duplicates");
+            };
             for (int i = 0; i < docs.size(); i++) {
                 String key = createKey(query.getId(), docs.get(i));
                 if (relevanceMap.containsKey(key)) {

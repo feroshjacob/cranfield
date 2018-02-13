@@ -52,6 +52,7 @@ if __name__ == '__main__':
     all_queries = [query for query in read_queries() if query['query number'] != 0]
     for query in all_queries:
         documents = search_query(query)
+        assert len(documents)==len(set(documents)), "Search results should not have duplicates:"+str(documents)
         if len(documents) > 0:
             print "Query:{} and Results:{}".format(query, documents)
             dcg = calculate_dcg(query, documents)
