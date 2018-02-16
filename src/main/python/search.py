@@ -3,7 +3,7 @@ from readers import read_queries, read_documents
 inverted_index = {}
 
 
-def remove_not_indexed_toknes(tokens):
+def remove_not_indexed_tokens(tokens):
     return [token for token in tokens if token in inverted_index]
 
 
@@ -34,7 +34,7 @@ def merge_postings(indexed_tokens):
 
 def search_query(query):
     tokens = tokenize(str(query['query']))
-    indexed_tokens = remove_not_indexed_toknes(tokens)
+    indexed_tokens = remove_not_indexed_tokens(tokens)
     if len(indexed_tokens) == 0:
         return []
     elif len(indexed_tokens) == 1:
