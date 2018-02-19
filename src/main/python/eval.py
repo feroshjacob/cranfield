@@ -54,10 +54,10 @@ if __name__ == '__main__':
         documents = search_query(query)
         assert len(documents)==len(set(documents)), "Search results should not have duplicates:"+str(documents)
         if len(documents) > 0:
-            print "Query:{} and Results:{}".format(query, documents)
+            print ("Query:{} and Results:{}", format(query, documents))
             dcg = calculate_dcg(query, documents)
             idcg = ideal_ndcg[str(query['query number'])]
             ndcg = dcg / idcg
-            print "dcg={}, ideal={}, ndcg={}".format(dcg, idcg, ndcg)
+            print ("dcg={}, ideal={}, ndcg={}", format(dcg, idcg, ndcg))
             sum = sum + ndcg
-    print "Final ncdg for all queries is {}".format(sum / len(all_queries))
+    print ("Final ncdg for all queries is {}", format(sum / len(all_queries)))
