@@ -9,7 +9,9 @@ import math
 
 inverted_index = {}
 doc_length = {}
-max = 1
+
+# Find the # of documents in the corpus.
+max = len(read_documents()) + 1
 
 # Creating a master dictionary to store the docId and IDF value.
 masterDictionary = {}
@@ -33,56 +35,102 @@ def remove_not_indexed_toknes(tokens):
 #             second_index = second_index + 1
 #     return merged_list
 
+
+def ranking(scores, Qlength, length):
+    ranking = []
+    cos_score = 0
+    for i in range(0, len(scores)):
+        if scores[i] > 0:
+            cos_score = scores[i] / ((Qlength * 0.5) * (length[i] ** 0.5))
+        else:
+            cos_score = scores[i]
+        ranking.append((i, cos_score))
+
+    return ranking
+
 def tf(freq):
     return 1 + math.log(float(freq))
 
 def idf(freq):
     return math.log((max-1) / float(freq))
 
-def rank_postings(query):
-    query_word_count = {}
-    query_word_count[query[0]] = 1
-    query_word_unique = [query[0]]
+def calculate_tf_idf(query):
+    wordCount = {}
+    wordCount[query[0]] = 1
+    uniqueWords =  [query[0]]
 
-    for i in range(1, len(query)):
-        if query[i] in query_word_count:
-            query_word_count[query[i]] += 1
+    for token in query:
+        if token in wordCount:
+            wordCount[token] += 1
         else:
-            query_word_count[query[i]] = 1
-            query_word_unique.append(query[i])
+            wordCount[token] = 1
+            uniqueWords.append(token)
 
     scores = [0] * max
     length = [0] * max
-    query_length = 0
+    Qlength = 0
 
-    for i in range(len(query_word_unique)):
-        token = query_word_unique[i]
-        id_list = inverted_index[token]
-        list_length = len(id_list)
+    for token in uniqueWords:
+        documents = inverted_index[token]
+        noOfDocuments = len(documents)
 
-        idf_val = idf(list_length)
-        vec_query = tf(query_word_count[token]) * idf_val
-        query_length += vec_query**2
+        vectorQuery = tf(wordCount[token]) * idf(noOfDocuments)
+        Qlength += vectorQuery**2
 
-        for tup in id_list:
-            doc_id = tup[0]
-            doc_freq = tup[1]
-            # Print this
-            vec_doc = tf(doc_freq)
+        for document in documents:
+            docId = document[0]
+            freq = document[1]
+            vectorDocument = tf(freq)
+            # vectorDocument = tf(freq) * idf(freq)
+            length[docId] += vectorDocument**2
+            scores[docId] += vectorDocument * vectorQuery
+            rankings = ranking(scores, Qlength, length)
 
-            length[doc_id] += vec_doc**2
-            scores[doc_id] += vec_doc * vec_query
-
-    ranking = []
-    for i in range(0, len(scores)):
-        if scores[i] > 0:
-            cos_score = scores[i] / ((query_length*0.5) * (length[i]**0.5))
-        else:
-            cos_score = scores[i]
-        ranking.append((i, cos_score))
-    ranking.sort(key=lambda tup: tup[1], reverse=True)
-
-    return [pos[0] for pos in ranking]
+    rankings.sort(key=lambda tup: tup[1], reverse=True)
+    return [i[1] for i in rankings]
+    # query_word_count = {}
+    # query_word_count[query[0]] = 1
+    # query_word_unique = [query[0]]
+    #
+    # for i in range(1, len(query)):
+    #     if query[i] in query_word_count:
+    #         query_word_count[query[i]] += 1
+    #     else:
+    #         query_word_count[query[i]] = 1
+    #         query_word_unique.append(query[i])
+    #
+    # scores = [0] * max
+    # length = [0] * max
+    # query_length = 0
+    #
+    # for i in range(len(query_word_unique)):
+    #     token = query_word_unique[i]
+    #     id_list = inverted_index[token]
+    #     list_length = len(id_list)
+    #
+    #     idf_val = idf(list_length)
+    #     vec_query = tf(query_word_count[token]) * idf_val
+    #     query_length += vec_query**2
+    #
+    #     for tup in id_list:
+    #         doc_id = tup[0]
+    #         doc_freq = tup[1]
+    #         # Print this
+    #         vec_doc = tf(doc_freq)
+    #
+    #         length[doc_id] += vec_doc**2
+    #         scores[doc_id] += vec_doc * vec_query
+    #
+    # ranking = []
+    # for i in range(0, len(scores)):
+    #     if scores[i] > 0:
+    #         cos_score = scores[i] / ((query_length*0.5) * (length[i]**0.5))
+    #     else:
+    #         cos_score = scores[i]
+    #     ranking.append((i, cos_score))
+    # ranking.sort(key=lambda tup: tup[1], reverse=True)
+    #
+    # return [pos[0] for pos in ranking]
 
 # def merge_postings(indexed_tokens):
 #     first_list = inverted_index[indexed_tokens[0]]
@@ -102,7 +150,7 @@ def search_query(query):
         return inverted_index[indexed_tokens[0]]
     else:
         # return rank_postings(indexed_tokens)
-        return rank_postings(indexed_tokens)
+        return calculate_tf_idf(indexed_tokens)
 
 
 def tokenize(text):
@@ -135,8 +183,7 @@ def add_to_index(document):
 
     tokens.extend(body)
 
-    global max
-    max += 1
+
     for token in tokens:
         add_token_to_index(token, docId)
 
@@ -154,5 +201,4 @@ if __name__ == '__main__':
     all_queries = [query for query in read_queries() if query['query number'] != 0]
     for query in all_queries:
         documents = search_query(query)
-        print ("Query:{} and Results:{}", format(query, documents))
-
+        # print ("Query:{} and Results:{}", format(query, documents))
