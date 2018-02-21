@@ -79,58 +79,19 @@ def calculate_tf_idf(query):
 
         for document in documents:
             docId = document[0]
+            # print(docId)
             freq = document[1]
+            # print(freq)
             vectorDocument = tf(freq)
             # vectorDocument = tf(freq) * idf(freq)
             length[docId] += vectorDocument**2
             scores[docId] += vectorDocument * vectorQuery
-            rankings = ranking(scores, Qlength, length)
+
+    rankings = []
+    rankings = ranking(scores, Qlength, length)
 
     rankings.sort(key=lambda tup: tup[1], reverse=True)
-    return [i[1] for i in rankings]
-    # query_word_count = {}
-    # query_word_count[query[0]] = 1
-    # query_word_unique = [query[0]]
-    #
-    # for i in range(1, len(query)):
-    #     if query[i] in query_word_count:
-    #         query_word_count[query[i]] += 1
-    #     else:
-    #         query_word_count[query[i]] = 1
-    #         query_word_unique.append(query[i])
-    #
-    # scores = [0] * max
-    # length = [0] * max
-    # query_length = 0
-    #
-    # for i in range(len(query_word_unique)):
-    #     token = query_word_unique[i]
-    #     id_list = inverted_index[token]
-    #     list_length = len(id_list)
-    #
-    #     idf_val = idf(list_length)
-    #     vec_query = tf(query_word_count[token]) * idf_val
-    #     query_length += vec_query**2
-    #
-    #     for tup in id_list:
-    #         doc_id = tup[0]
-    #         doc_freq = tup[1]
-    #         # Print this
-    #         vec_doc = tf(doc_freq)
-    #
-    #         length[doc_id] += vec_doc**2
-    #         scores[doc_id] += vec_doc * vec_query
-    #
-    # ranking = []
-    # for i in range(0, len(scores)):
-    #     if scores[i] > 0:
-    #         cos_score = scores[i] / ((query_length*0.5) * (length[i]**0.5))
-    #     else:
-    #         cos_score = scores[i]
-    #     ranking.append((i, cos_score))
-    # ranking.sort(key=lambda tup: tup[1], reverse=True)
-    #
-    # return [pos[0] for pos in ranking]
+    return [i[0] for i in rankings]
 
 # def merge_postings(indexed_tokens):
 #     first_list = inverted_index[indexed_tokens[0]]
