@@ -1,5 +1,8 @@
 from readers import read_queries, read_documents
 import math
+# from nltk.corpus import stopwords             Decreases the ndcg score.
+# from nltk.stem import SnowballStemmer
+
 
 
 # ToDo
@@ -113,9 +116,36 @@ def search_query(query):
         # return rank_postings(indexed_tokens)
         return calculate_tf_idf(indexed_tokens)
 
+# Takes the ncdg score from 0.59 to 0.61
+def specialChars(tokens):
+    str = []
+    for token in tokens:
+        str.append(''.join(e for e in token if e.isalnum()))        # https://stackoverflow.com/questions/5843518/remove-all-special-characters-punctuation-and-spaces-from-string
+    return str
+
+# Takes the ndcg score from 0.61 to 0.63
+# def stop(tokens):
+#     stop_words = set(stopwords.words('english'))
+#     str = []
+#     for token in tokens:
+#         if token not in stop_words:
+#             str.append(token)
+#     return str
+
+# def stemming(tokens):
+#     str= []
+#     stemmer = SnowballStemmer("english", ignore_stopwords=True)                #www.nltk.org/howto/stem.html
+#     for token in tokens:
+#         str.append(stemmer.stem(token))
+#     return str
 
 def tokenize(text):
-    return text.split(" ")
+    str = []
+    str = text.split(" ")
+    str = specialChars(str)
+    # str =  stop(str)
+    # str = stemming(str)
+    return str
 
 
 def add_token_to_index(token, doc_id):
@@ -134,20 +164,14 @@ def add_token_to_index(token, doc_id):
 
 
 def add_to_index(document):
-
     # Extending the search to the body.
     docId = document['id']
-    documentText = document['title']
-    tokens = tokenize(documentText)
-
+    tokens = tokenize(document['title'])
     body = tokenize(document['body'])
-
     tokens.extend(body)
-
 
     for token in tokens:
         add_token_to_index(token, docId)
-
 
 def create_index():
     for document in read_documents():
