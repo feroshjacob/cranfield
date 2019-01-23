@@ -10,16 +10,13 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 /**
- * Created by Ferosh Jacob
- * Date: 01/27/18
- * KSU: CS 7263 Text Mining
+ * Created by Ferosh Jacob Date: 01/23/19 KSU: CS 7263 Text Mining
  */
 public class ReadCranfieldData {
 
     private static InputStream loadResource(String fileName) {
         return ReadCranfieldData.class.getResourceAsStream(fileName);
     }
-
 
     public static List<Document> readDocuments() {
 
@@ -48,4 +45,3 @@ public class ReadCranfieldData {
         return gson.fromJson(br, type);
     }
 }
-

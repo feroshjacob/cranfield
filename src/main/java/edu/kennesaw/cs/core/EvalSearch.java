@@ -7,18 +7,13 @@ import edu.kennesaw.cs.readers.Relevance;
 
 import java.util.*;
 
-
 /*
   CHANGE THIS CLASS ONLY IF YOU DECIDE TO CREATE A CoreSearch implementation!
   OTHERS DO NOT MODIFY THIS CLASS
- */
 /**
- * Created by Ferosh Jacob
- * Date: 01/27/18
- * KSU: CS 7263 Text Mining
+ * Created by Ferosh Jacob Date: 01/23/19 KSU: CS 7263 Text Mining
  */
 public class EvalSearch {
-
 
     private static double log2 = Math.log(2);
     private static Map<String, Integer> relevanceMap = new HashMap<String, Integer>();
@@ -39,9 +34,7 @@ public class EvalSearch {
             coreSearch.addToIndex(document);
         }
 
-
         calculateIdeal();
-
 
         List<Double> ndcgs = new ArrayList<Double>();
         List<Query> queries = ReadCranfieldData.readQueries();
@@ -49,9 +42,10 @@ public class EvalSearch {
             double queryScore = 0.0;
             List<Integer> docsWithDuplicates = coreSearch.search(query.getQuery());
             List<Integer> docs = new ArrayList<Integer>(new HashSet<Integer>(docsWithDuplicates));
-            if(docs.size()!=docsWithDuplicates.size()) {
-               throw new RuntimeException( "Search results should not have duplicates");
-            };
+            if (docs.size() != docsWithDuplicates.size()) {
+                throw new RuntimeException("Search results should not have duplicates");
+            }
+            ;
             for (int i = 0; i < docs.size(); i++) {
                 String key = createKey(query.getId(), docs.get(i));
                 if (relevanceMap.containsKey(key)) {
@@ -62,8 +56,8 @@ public class EvalSearch {
             if (idealScoreMap.containsKey(query.getId()) && queryScore != 0.0) {
 
                 double ndcg = queryScore / idealScoreMap.get(query.getId());
-                System.out.println(query.getId() + ")" + query.getQuery() + " dcg=" + queryScore + ", ideal=" + idealScoreMap.get(query.getId())
-                        + ",ndcg= " + ndcg);
+                System.out.println(query.getId() + ")" + query.getQuery() + " dcg=" + queryScore + ", ideal="
+                        + idealScoreMap.get(query.getId()) + ",ndcg= " + ndcg);
                 ndcgs.add(ndcg);
             }
         }
@@ -72,7 +66,7 @@ public class EvalSearch {
         for (Double ndcg : ndcgs) {
             sum = sum + ndcg;
         }
-        System.out.println("Total ndcg score=" + sum/(queries.size()-1) );
+        System.out.println("Total ndcg score=" + sum / (queries.size() - 1));
     }
 
     private static void calculateIdeal() {

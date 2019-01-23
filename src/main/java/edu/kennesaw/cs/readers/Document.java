@@ -1,9 +1,7 @@
 package edu.kennesaw.cs.readers;
 
 /**
- * Created by Ferosh Jacob
- * Date: 01/27/18
- * KSU: CS 7263 Text Mining
+ * Created by Ferosh Jacob Date: 01/23/19 KSU: CS 7263 Text Mining
  */
 public class Document {
 

@@ -1,10 +1,9 @@
 package edu.kennesaw.cs.readers;
 
 import com.google.gson.annotations.SerializedName;
+
 /**
- * Created by Ferosh Jacob
- * Date: 01/27/18
- * KSU: CS 7263 Text Mining
+ * Created by Ferosh Jacob Date: 01/23/19 KSU: CS 7263 Text Mining
  */
 public class Relevance {
     @SerializedName("query_num")

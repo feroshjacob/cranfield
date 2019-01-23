@@ -5,16 +5,13 @@ import edu.kennesaw.cs.readers.Document;
 import java.util.*;
 
 /*
-This class is an example implementation of the CoreSearch, you can either modify or write another implementation of the Core Search.
+This class is an example implementation of the CoreSearch, Using this as example, write another implementation of the Core Search.
  */
 
 /**
- * Created by Ferosh Jacob
- * Date: 01/27/18
- * KSU: CS 7263 Text Mining
+ * Created by Ferosh Jacob Date: 01/23/19 KSU: CS 7263 Text Mining
  */
 public class CoreSearchImpl implements CoreSearch {
-
 
     Map<String, List<Integer>> invertedIndex = new HashMap<String, List<Integer>>();
 
@@ -23,7 +20,7 @@ public class CoreSearchImpl implements CoreSearch {
     }
 
     /*
-    A very simple tokenization.
+     * A very simple tokenization.
      */
     public String[] tokenize(String title) {
         return title.split(" ");
@@ -53,12 +50,13 @@ public class CoreSearchImpl implements CoreSearch {
     }
 
     /*
-    A very simple search implementation.
+     * A very simple search implementation.
      */
     public List<Integer> search(String query) {
         String[] queryTokens = removeNotIndexTokens(query.split(" "));
         List<Integer> mergedDocIds = new ArrayList<Integer>();
-        if (queryTokens.length == 0) return mergedDocIds;
+        if (queryTokens.length == 0)
+            return mergedDocIds;
         int index = 1;
         if (queryTokens.length == 1)
             invertedIndex.get(queryTokens[0]);
@@ -73,19 +71,19 @@ public class CoreSearchImpl implements CoreSearch {
     }
 
     /*
-    Ignore terms in query that are not in Index
+     * Ignore terms in query that are not in Index
      */
     private String[] removeNotIndexTokens(String[] split) {
         List<String> indexedTokens = new ArrayList<String>();
         for (String token : split) {
-            if (invertedIndex.containsKey(token)) indexedTokens.add(token);
+            if (invertedIndex.containsKey(token))
+                indexedTokens.add(token);
         }
         return indexedTokens.toArray(new String[indexedTokens.size()]);
     }
 
-
     /*
-    AND Merging postings!!
+     * AND Merging postings!!
      */
     public List<Integer> mergeTwoDocIds(List<Integer> docList1, List<Integer> docList2) {
         int docIndex1 = 0;

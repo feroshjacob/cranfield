@@ -21,6 +21,6 @@ Total ndcg score=0.004798990340077844
 [nDCG](https://en.wikipedia.org/wiki/Discounted_cumulative_gain) is a very common metric used in search evaluations. 
 Higher nDCG score (close to 1.0 ) describes a search system that gives all the relevant results with most relevant ones on the top.
 
-### What should be the goal for this project?
+### What should be the goal for this assignment?
+Following the example [CoreSearchImpl]
 
-Try to modify the code such that you can increase the nDCG score. 
