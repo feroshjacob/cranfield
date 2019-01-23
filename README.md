@@ -22,5 +22,8 @@ Total ndcg score=0.004798990340077844
 Higher nDCG score (close to 1.0 ) describes a search system that gives all the relevant results with most relevant ones on the top.
 
 ### What should be the goal for this assignment?
-Following the example [CoreSearchImpl]
+1. Following the example [CoreSearchImpl](https://github.com/feroshjacob/cranfield/blob/spring2019-assignment-br/src/main/java/edu/kennesaw/cs/core/CoreSearchImpl.java), create a class `MySearchImpl` implementing the interface CoreSearch
+2. Modify the [Line](https://github.com/feroshjacob/cranfield/blob/spring2019-assignment-br/src/main/java/edu/kennesaw/cs/core/EvalSearch.java#L23) to ` evalSearch(new MySearchImpl());` and Run the EvalSearch class.
+3. Optimize the class `MySearchImpl` such that you improve the ndcg.
+- Note: You can write unit test case for your `MySearchImpl` using the example [CoreSearchImplTest](https://github.com/feroshjacob/cranfield/blob/spring2019-assignment-br/src/test/java/edu/kennesaw/cs/core/CoreSearchImplTest.java)
 
